@@ -30,7 +30,7 @@ const resize = () => {
       // width is now correct!
       const imgWrapper = document.getElementById('images');
       console.log("imgWrapper:", imgWrapper);
-      imgWrapper.style.width = widthSum + 2 + 'px'; // do i need to add the border?
+      imgWrapper.style.width = widthSum + 'px'; // do i need to add the border?
 
     }, 1000);
   }
@@ -70,32 +70,40 @@ const initScroll = () => {
 
 /////////////////////////////////////////
 const handleScroll = (e) => {
+  // console.log("e:", e);
 
-  console.log("handleScroll was run");
-  console.log("e:", e);
-
-  const elm = document.querySelector('.vandretGalleriWrapper');
-  console.log("elm.scrollLeft:", elm.scrollLeft);
-
-  if (e.deltaY < 0) { console.log('scrolling up:', e.deltaY); }
-  else if (e.deltaY > 0) { console.log('scrolling down:', e.deltaY); }
+  // if (e.deltaY < 0) { console.log('scrolling up:', e.deltaY); }
+  // else if (e.deltaY > 0) { console.log('scrolling down:', e.deltaY); }
   
   // check if I am over document!
   if (isOverGallery === true) {
     console.log("isOverGallery is true");
     scrollPos += e.deltaY;
-    // requestAnimationFrame(scrollX(scrollPos));
-    scrollX(scrollPos); // still glitchy .. working on it!
+    requestAnimationFrame(scrollX);
   }
-
 }
 
 
 /////////////////////////////////////////
-const scrollX = (x) => {
+// get the far right of scrollbar by taking width of "images" and subtracting width of "vandretGallery"
+const scrollX = () => {
+
+  // img elm
+  const imgs = document.getElementById('images');
+  const imgsInfo = imgs.getBoundingClientRect();
+  const width = imgsInfo.width;
+
+  const wrap = document.querySelector('.vandretGalleriWrapper');
+  const wrapInfo = wrap.getBoundingClientRect();
+  const wrapWidth = wrapInfo.width;
+
+  // set boundaries
+  if (scrollPos < 0) scrollPos = 0;
+  if (scrollPos > (width - wrapWidth)) scrollPos = (width - wrapWidth);
+
   galleriElm.scroll({
     top: 0,
-    left: x,
+    left: scrollPos,
     behavior: 'smooth'
   });
 }
