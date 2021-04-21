@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+    <title>cantina</title>
+    <meta description='HEr kan man skrive noget vedkommend søgbar tekts'>
+    <link href='./css/style.css' type='text/css' rel='stylesheet'/>
+</head>
+
+<body>
+
+    <h2>Overskrift</h2>
+
+
+    <img src='hest.jpg' alt='hest' title='hest'/>
+
+
+    <!-- vandret -->
+    <div class='vandretGalleriWrapper'>
+
+        <ul id='images'>
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+            <li>
+                <img src='./images/BILLEDE2.jpg'/>
+                <span class='caption'>her er caption</span>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+
+    <!-- 
+    <div class='billedWrapper'>
+        <h2>Hello world</h2>
+        <img src='./images/BILLEDE2.jpg' class='img1'/>
+        <img src='./images/BILLEDE2.jpg' class='img2'/>
+        <img src='./images/BILLEDE2.jpg' class='img3'/>
+    </div>
+    -->
+
+    <h2>Underskrift</h2>
+
+
+    <!-- ********************************************************************* -->
+    <script>
+
+        window.addEventListener("DOMContentLoaded", function() {
+
+            console.log("hej");
+
+            /////////////////////////////////////////////////////////////
+            function resize() {
+
+
+                console.log("resize was run");
+
+                const pageWidth = getWidth();
+                console.log("pageWidth:", pageWidth);
+
+                if (pageWidth > 600) {
+
+                    setTimeout(function() {
+
+                        const imgElms = document.querySelectorAll('#images li');
+                        console.log("imgElms:", imgElms);
+
+                        let widthSum = 0;
+                        for (let i=0; i < imgElms.length; i++) {
+                            const size = imgElms[i].getBoundingClientRect();
+                            const width = size.width;
+                            widthSum += width;
+                        }
+
+                        console.log("widthSum:", widthSum);
+
+                        // width is now correct!
+                        const imgWrapper = document.getElementById('images');
+                        console.log("imgWrapper:", imgWrapper);
+                        imgWrapper.style.width = widthSum + 'px';
+
+
+                    }, 1000);
+                }
+
+            }
+
+
+            /////////////////////////////////////////////////////////////
+            function getWidth() {
+                return Math.max(
+                    document.body.scrollWidth,
+                    document.documentElement.scrollWidth,
+                    document.body.offsetWidth,
+                    document.documentElement.offsetWidth,
+                    document.documentElement.clientWidth
+                );
+            }
+
+            resize();
+            window.onresize = resize;
+
+
+
+        })
+
+
+    </script>
+</body>
+
+</html>
