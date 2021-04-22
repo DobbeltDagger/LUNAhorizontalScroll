@@ -1,5 +1,7 @@
 let isOverGallery = false;
-let scrollPos = 0;
+let scrollPos = 0; // scroll position of the horizontal scroll bar
+let scrollAmount = 0; // how much are we scrolling next time?
+const scrollStep = 75; // steps (pixels) to scroll at a time 
 const galleriElm = document.querySelector('.vandretGalleriWrapper');
 
 
@@ -7,32 +9,52 @@ const galleriElm = document.querySelector('.vandretGalleriWrapper');
 const resize = () => {
 
   console.log("resize was run");
-
   const pageWidth = getDocWidth();
-  console.log("pageWidth:", pageWidth);
 
   // check pagewidth
   if (pageWidth > 600) {
 
+    // make li's float left
+    const lis = document.querySelectorAll('#images li');
+    for (let i = 0; i < lis.length; i++) {
+      lis[i].style.float = 'left';
+    }
+
+    galleriElm.style.overflowX = 'scroll';
+    // overflow-x: scroll;
+
     setTimeout(function () {
 
       const imgElms = document.querySelectorAll('#images li');
-      console.log("imgElms:", imgElms);
-
       let widthSum = 0;
       for (let i = 0; i < imgElms.length; i++) {
         const size = imgElms[i].getBoundingClientRect();
-        const width = size.width;
-        widthSum += width;
+        widthSum += size.width;
       }
-      console.log("widthSum:", widthSum);
+      // console.log("widthSum:", widthSum);
 
       // width is now correct!
       const imgWrapper = document.getElementById('images');
       console.log("imgWrapper:", imgWrapper);
-      imgWrapper.style.width = widthSum + 'px'; // do i need to add the border?
+      imgWrapper.style.width = Math.ceil(widthSum) + 'px'; // do i need to add the border?
 
     }, 1000);
+
+  }
+  else {
+    // remove horisontal scroll
+
+    galleriElm.style.overflowX = 'hidden';
+    // overflow-x: hidden;
+
+    const lis = document.querySelectorAll('#images li');
+    for (let i = 0; i < lis.length; i++) {
+      lis[i].style.float = 'none';
+    }
+
+    const imgWrapper = document.getElementById('images');
+    console.log("imgWrapper:", imgWrapper);
+    imgWrapper.style.width = 'auto'; // 100%'; // do i need to add the border?
   }
 
 }
@@ -46,15 +68,11 @@ const initScroll = () => {
   // is mouse over gallery?
   var div = document.getElementById("images");
   div.onmouseover = function() {
-    // this.mouseIsOver = true;
     isOverGallery = true;
-    console.log("isOverGallery:", isOverGallery);
     div.style.backgroundColor = 'pink';
   };
   div.onmouseout = function() {
-    // this.mouseIsOver = false;
     isOverGallery = false;
-    console.log("isOverGallery:", isOverGallery);
     div.style.backgroundColor = 'tomato';
   }
   /*
@@ -65,20 +83,36 @@ const initScroll = () => {
   }
   */
 
+  // listen for scroll on horizontal scroll bar
+  /*
+  const wrapper = document.querySelector(".vandretGalleriWrapper");
+  wrapper.addEventListener('scroll', function(e) {
+    console.log("scroll!");
+    scrollPos = wrapper.scrollLeft;
+  })
+  */
+
+
 }
 
 
 /////////////////////////////////////////
 const handleScroll = (e) => {
-  // console.log("e:", e);
+  
+  console.log("e:", e);
+  // scrollPos = galleriElm.scrollLeft; // if I scrolled manually, get the pos here
 
-  // if (e.deltaY < 0) { console.log('scrolling up:', e.deltaY); }
-  // else if (e.deltaY > 0) { console.log('scrolling down:', e.deltaY); }
+  // make consistent scroll amount in FF and chrome
+  if (e.deltaY < 0) { scrollAmount = -scrollStep; }
+  else if (e.deltaY > 0) { scrollAmount = scrollStep; }
+  console.log("scrollAmount:", scrollAmount);
+
+  // in firefox deltaY is 3, in chrome its 100
   
   // check if I am over document!
   if (isOverGallery === true) {
     console.log("isOverGallery is true");
-    scrollPos += e.deltaY;
+    scrollPos += scrollAmount; /* e.deltaY; */
     requestAnimationFrame(scrollX);
   }
 }

@@ -4,8 +4,10 @@ window.addEventListener("DOMContentLoaded", function() {
 
   initScroll();
 
-  const elm = document.getElementById('images');
-  elm.onwheel = handleScroll;
+  // const elm = document.getElementById('images');
+  // elm.onwheel = handleScroll;
+
+  document.querySelector('.vandretGalleriWrapper').onwheel = handleScroll;
   
   window.onresize = resize;
   resize();
